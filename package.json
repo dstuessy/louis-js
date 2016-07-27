@@ -1,0 +1,15 @@
+{
+  "name": "animate-js",
+  "version": "1.0.0",
+  "description": "A light-weight multipurpose JavaScript animation library.",
+  "main": "src/animate.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "author": "Daniel Stuessy",
+  "license": "ISC",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-jslint": "^1.0.1"
+  }
+}
