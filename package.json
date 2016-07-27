@@ -4,12 +4,12 @@
   "description": "A light-weight multipurpose JavaScript animation library.",
   "main": "src/animate.js",
   "scripts": {
-    "test": "npm test"
+    "test": "",
+    "lint": "node lint.js"
   },
   "author": "Daniel Stuessy",
   "license": "ISC",
   "devDependencies": {
-    "gulp": "^3.9.1",
-    "gulp-jslint": "^1.0.1"
+    "jslint": "^0.10.1"
   }
 }

@@ -12,6 +12,16 @@
 		}
 	</style>
 
+	<script type="text/javascript">
+		a = Animation({
+			duration: 1000, 
+			fps:10,
+			onTick: function() {
+				console.log('on tick');
+			}
+		});
+	</script>
+
 </head>
 <body>
 	<div class="animateMe"></div>
