@@ -10,6 +10,10 @@
         };
     }
 
+    function noop() {
+        return undefined;
+    }
+
     function now() {
         return Date.now();
     }
@@ -26,19 +30,41 @@
         return timeLeft(duration, startTime) <= 0;
     }
 
-    function tick(accumulator, fps, duration, startTime, onTick, onEnd) {
-        var tickResult = onTick(accumulator, duration, startTime, timeLeft(duration, startTime));
+    function timePerTick(fps) {
+        return 1000 / fps;
+    }
+
+    function delta(currentTime, previousTickTime) {
+        return currentTime - previousTickTime;
+    }
+
+    function isNextTick(deltaTime, tPerTick) {
+        return deltaTime >= tPerTick;
+    }
+
+    function tick(accumulator, previousTickTime, fps, duration, startTime, onTick, onEnd) {
+        var tickResult,
+            deltaTime = delta(now(), previousTickTime),
+            isItNextTick = isNextTick(deltaTime, timePerTick(fps));
+
+        console.log(isItNextTick, 'delta time: ', deltaTime, 'time per tick: ', timePerTick(fps), 'fps: ', fps);
+
+        if (isItNextTick) {
+            console.log('tick is gonna happen!');
+            tickResult = onTick(accumulator, deltaTime, duration, startTime, timeLeft(duration, startTime));
+            previousTickTime = now();
+        }
 
         if (tickResult === TERMINATE || timeIsOver(duration, startTime)) {
             onEnd(accumulator);
         } else {
-            requestAnimationFrame(partial(tick, [tickResult, fps, duration, startTime, onTick, onEnd]));
+            requestAnimationFrame(partial(tick, [tickResult || accumulator, previousTickTime, fps, duration, startTime, onTick, onEnd]));
         }
     }
 
     function animate(fps, duration, onStart, onTick, onEnd, accumulator) {
         onStart(accumulator);
-        tick(accumulator, fps, duration, now(), onTick, onEnd);
+        tick(accumulator, now(), fps, duration, now(), onTick, onEnd);
     }
 
     window.Animation = function (options) {
@@ -48,9 +74,9 @@
         animation.animate = partial(animate, [
             options.fps,
             options.duration,
-            options.onStart,
-            options.onTick,
-            options.onEnd
+            options.onStart || noop,
+            options.onTick || noop,
+            options.onEnd || noop
         ]);
 
         return Object.freeze(animation);

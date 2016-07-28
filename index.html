@@ -21,11 +21,11 @@
 		el = document.querySelector('.animateMe');
 		a = Animation({
 			duration: 1000,
-			fps:10,
+			fps: 10,
 			onStart: function(acc) {
 				console.log('starting');
 			},
-			onTick: function(acc, duration, startTime, timeLeft) {
+			onTick: function(acc, delta, duration, startTime, timeLeft) {
 				var winHeight = window.innerHeight;
 				var el = acc.el;
 				var velocity = acc.velocity;
@@ -33,20 +33,20 @@
 				var height = parseInt(el.style.height) || 0;
 				var top = parseInt(el.style.top) || 0;
 
-				console.log(velocity, height);
+				console.log(delta);
 
 				if (top+velocity >= winHeight) {
 					return Animation.TERMINATE;
 				} else {
 
-					velocity += acceleration;
+					velocity += acceleration * delta;
 					el.style.top = top+velocity + 'px';
 
 					return {
 						el: el,
 						acceleration: acceleration,
 						velocity: velocity
-					}
+					};
 				}
 			},
 			onEnd: function(acc) {
