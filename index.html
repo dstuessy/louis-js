@@ -6,24 +6,53 @@
 
 	<style>
 		.animateMe {
+			position: absolute;
 			width: 50px;
 			height: 50px;
 			background-color: #000;
 		}
 	</style>
 
-	<script type="text/javascript">
-		a = Animation({
-			duration: 1000, 
-			fps:10,
-			onTick: function() {
-				console.log('on tick');
-			}
-		});
-	</script>
-
 </head>
 <body>
 	<div class="animateMe"></div>
+
+	<script type="text/javascript">
+		el = document.querySelector('.animateMe');
+		a = Animation({
+			duration: 1000,
+			fps:10,
+			onStart: function(acc) {
+				console.log('starting');
+			},
+			onTick: function(acc, duration, startTime, timeLeft) {
+				var winHeight = window.innerHeight;
+				var el = acc.el;
+				var velocity = acc.velocity;
+				var acceleration = acc.acceleration;
+				var height = parseInt(el.style.height) || 0;
+				var top = parseInt(el.style.top) || 0;
+
+				console.log(velocity, height);
+
+				if (top+velocity >= winHeight) {
+					return Animation.TERMINATE;
+				} else {
+
+					velocity += acceleration;
+					el.style.top = top+velocity + 'px';
+
+					return {
+						el: el,
+						acceleration: acceleration,
+						velocity: velocity
+					}
+				}
+			},
+			onEnd: function(acc) {
+				console.log('finished!');
+			}
+		});
+	</script>
 </body>
 </html>
