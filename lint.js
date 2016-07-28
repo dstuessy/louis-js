@@ -7,7 +7,7 @@ var lintStream = new LintStream({
 	length: 100,
 	single: true,
 	browser: true,
-	predef: ['window', 'console']
+	predef: ['window', 'console', 'requestAnimationFrame']
 });
 
 fs.readFile(filename, function(err, data) {
