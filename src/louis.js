@@ -52,7 +52,7 @@
             accumulatedTime += delta(currentTime, previousTime);
 
             while (accumulatedTime >= timePerTick(fps) && !tickResult.terminated) {
-                tickResult = tickFn(tickResult.state, delta(currentTime, previousTime));
+                tickResult = tickFn(tickResult.state);
                 accumulatedTime -= timePerTick(fps);
             }
 
