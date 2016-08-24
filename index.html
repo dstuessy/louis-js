@@ -20,38 +20,48 @@
 	<script type="text/javascript">
 		el = document.querySelector('.animateMe');
 		a = Animation({
-			duration: 1000,
-			fps: 10,
-			onStart: function(acc) {
+			fps: 100,
+			onStart: function(state) {
 				console.log('starting');
 			},
-			onTick: function(acc, delta, duration, startTime, timeLeft) {
+			onTick: function(state, delta) {
 				var winHeight = window.innerHeight;
-				var el = acc.el;
-				var velocity = acc.velocity;
-				var acceleration = acc.acceleration;
+				var el = state.el;
+				var velocity = state.velocity;
+				var acceleration = state.acceleration;
 				var height = parseInt(el.style.height) || 0;
-				var top = parseInt(el.style.top) || 0;
+				var top = state.top + velocity;
+				var state = {
+					el: el,
+					top: top,
+					acceleration: acceleration,
+					velocity: velocity
+				};
 
-				console.log(delta);
-
-				if (top+velocity >= winHeight) {
-					return Animation.TERMINATE;
+				if (top >= 200) {
+					state.top = 200;
+					return Animation.Terminate(state);
 				} else {
-
-					velocity += acceleration * delta;
-					el.style.top = top+velocity + 'px';
-
-					return {
-						el: el,
-						acceleration: acceleration,
-						velocity: velocity
-					};
+					return Animation.Continue(state);
 				}
 			},
-			onEnd: function(acc) {
-				console.log('finished!');
+			draw: function(state) {
+				var el = state.el;
+				var top = state.top;
+
+				el.style.top = top + 'px';
+			},
+			onEnd: function(state) {
+				console.log('finished!', state.velocity, state.el.style.top);
 			}
+		});
+
+		// run the animation
+		a.animate({
+			el: el,
+			top: parseInt(el.style.top) || 0,
+			acceleration: 10,
+			velocity: 5
 		});
 	</script>
 </body>

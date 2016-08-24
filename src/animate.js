@@ -10,24 +10,21 @@
         };
     }
 
+    function range(n) {
+        var arr = [];
+        for (var i = 0; i < n; i++) {
+            arr.push(i);
+        }
+        return arr;
+    }
+
+    // dummy function to do 'no operation'
     function noop() {
         return undefined;
     }
 
     function now() {
         return Date.now();
-    }
-
-    function timePassed(startTime) {
-        return now() - startTime;
-    }
-
-    function timeLeft(duration, startTime) {
-        return duration - timePassed(startTime);
-    }
-
-    function timeIsOver(duration, startTime) {
-        return timeLeft(duration, startTime) <= 0;
     }
 
     function timePerTick(fps) {
@@ -38,33 +35,59 @@
         return currentTime - previousTickTime;
     }
 
-    function isNextTick(deltaTime, tPerTick) {
-        return deltaTime >= tPerTick;
+    function Terminate(state) {
+        return {
+            state: state,
+            terminated: true
+        };
     }
 
-    function tick(accumulator, previousTickTime, fps, duration, startTime, onTick, onEnd) {
-        var tickResult,
+    function Continue(state) {
+        return {
+            state: state,
+            terminated: false
+        };
+    }
+
+    function Accumulator(tickFn, fps, startTime) {
+        var accumulatedTime = 0;
+        var previousTime = startTime;
+
+        return function accumulate(currentTime, tickResult) {
+
+            accumulatedTime += delta(currentTime, previousTime);
+
+            while (accumulatedTime >= timePerTick(fps) && !tickResult.terminated) {
+                tickResult = tickFn(tickResult.state, delta(currentTime, previousTime));
+                accumulatedTime -= timePerTick(fps);
+            }
+
+            return tickResult;
+        };
+    }
+
+    function tick(previousResult, previousTickTime, fps, accumulator, draw, onEnd) {
+        var tickResult = accumulator(now(), previousResult),
             deltaTime = delta(now(), previousTickTime),
-            isItNextTick = isNextTick(deltaTime, timePerTick(fps));
+            isItNextTick = deltaTime >= timePerTick(fps);
 
-        console.log(isItNextTick, 'delta time: ', deltaTime, 'time per tick: ', timePerTick(fps), 'fps: ', fps);
-
-        if (isItNextTick) {
-            console.log('tick is gonna happen!');
-            tickResult = onTick(accumulator, deltaTime, duration, startTime, timeLeft(duration, startTime));
+        if (isItNextTick || tickResult.terminated) {
+            draw(tickResult.state);
             previousTickTime = now();
         }
 
-        if (tickResult === TERMINATE || timeIsOver(duration, startTime)) {
-            onEnd(accumulator);
+        if (tickResult.terminated) {
+            onEnd(tickResult.state);
         } else {
-            requestAnimationFrame(partial(tick, [tickResult || accumulator, previousTickTime, fps, duration, startTime, onTick, onEnd]));
+            requestAnimationFrame(partial(tick, [tickResult, previousTickTime, fps, accumulator, draw, onEnd]));
         }
     }
 
-    function animate(fps, duration, onStart, onTick, onEnd, accumulator) {
-        onStart(accumulator);
-        tick(accumulator, now(), fps, duration, now(), onTick, onEnd);
+    function animate(fps, onStart, onTick, draw, onEnd, startResult) {
+        var previousTickTime = now();
+
+        onStart(startResult);
+        tick(Continue(startResult), previousTickTime, fps, Accumulator(onTick, 60, now()), draw, onEnd);
     }
 
     window.Animation = function (options) {
@@ -73,14 +96,18 @@
 
         animation.animate = partial(animate, [
             options.fps,
-            options.duration,
             options.onStart || noop,
             options.onTick || noop,
+            options.draw || noop,
             options.onEnd || noop
         ]);
 
         return Object.freeze(animation);
     };
 
-    window.Animation.TERMINATE = TERMINATE;
+    window.Animation.Terminate = Terminate;
+
+    window.Animation.Continue = Continue;
+
+    window.Animation = Object.freeze(window.Animation);
 }());
