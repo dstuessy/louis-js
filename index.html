@@ -20,7 +20,7 @@
 	<script type="text/javascript">
 		el = document.querySelector('.animateMe');
 		a = Animation({
-			fps: 100,
+			fps: 10,
 			onStart: function(state) {
 				console.log('starting');
 			},
@@ -30,7 +30,8 @@
 				var velocity = state.velocity;
 				var acceleration = state.acceleration;
 				var height = parseInt(el.style.height) || 0;
-				var top = state.top + velocity;
+				var topLimit = 200;
+				var top = Math.min(state.top + velocity, topLimit);
 				var state = {
 					el: el,
 					top: top,
@@ -38,8 +39,7 @@
 					velocity: velocity
 				};
 
-				if (top >= 200) {
-					state.top = 200;
+				if (top >= topLimit) {
 					return Animation.Terminate(state);
 				} else {
 					return Animation.Continue(state);

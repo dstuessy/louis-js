@@ -1,8 +1,6 @@
 (function () {
     'use strict';
 
-    var TERMINATE = Object.create(null);
-
     function partial(fn, args) {
         return function partiallyApplied() {
             var moreArgs = Array.prototype.slice.call(arguments, 0);
