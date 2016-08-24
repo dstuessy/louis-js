@@ -5,6 +5,14 @@ A simple, flexible, and light-weight JavaScript library for animations. The idea
 A copy of the source file can be found under `src/louis.js`.
 
 
+## Contents
+
+- Browser Support
+- Functions
+- Options
+- Example
+
+
 ## Browser Support
 
 This has been written for Browsers only at the time being.
