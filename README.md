@@ -2,6 +2,8 @@
 
 A simple, flexible, and light-weight JavaScript library for animations. The idea is to provide a library that can be applied to multiple scenarios: from HTML5 canvas game development to DOM manipulations for UI development.
 
+A copy of the source file can be found under `src/louis.js`.
+
 ## Example
 
 For a working example, see the `index.html` file.
