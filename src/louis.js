@@ -1,25 +1,15 @@
 /*jslint
-    fudge
+    fudge,
+    white: true
 */
 (function () {
     'use strict';
 
     function partial(fn, args) {
         return function partiallyApplied() {
-            var moreArgs = Array.prototype.slice.call(arguments, 0);
+            var moreArgs = Array.prototype.slice.call(/*ignoreme*/arguments, /*ignoreme*/0);
             return fn.apply(null, args.concat(moreArgs));
         };
-    }
-
-
-    function range(n) {
-        var arr = [];
-
-        for (var i = 0; i < n; i++) {
-            arr.push(i);
-        }
-
-        return arr;
     }
 
     // dummy function to do 'no operation'

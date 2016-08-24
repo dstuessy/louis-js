@@ -4,19 +4,20 @@ var fs = require('fs'),
 var filename = 'src/louis.js';
 var lintStream = new LintStream({
 	edition: 'latest',
-	length: 100,
+	length: 120,
 	single: true,
 	browser: true,
 	predef: ['window', 'console', 'requestAnimationFrame']
 });
 
 fs.readFile(filename, function(err, data) {
+	var filteredFile = data.toString().replace(/\w*\/\*[^i]*ignoreme[^\*]*\*\/[^\/]*\/\*[^i]*ignoreme[^\*]*\*\/\w*/g, '');
 
 	console.log(`JSLint: Linting ${filename}`);
 
 	lintStream.write({
 		file: filename,
-		body: data.toString()
+		body: filteredFile
 	});
 
 	lintStream.on('data', function (chunk) {
