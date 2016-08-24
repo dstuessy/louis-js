@@ -7,21 +7,23 @@ A copy of the source file can be found under `src/louis.js`.
 
 ## Contents
 
-- Browser Support
+- Create Animation
 - Functions
 - Options
+- Browser Support
 - Example
 
 
-## Browser Support
+## Create Animation
 
-This has been written for Browsers only at the time being.
+Create an animation by using the global `Animate` function.
 
-- IE9+
-- Latest Firefox
-- Latest Chrome
+~~~ javascript
+var animation = Animation(options);
+~~~
 
-Functions used are from IE9+, so this should hopefully work on any reasonably modern browsers.
+- **Arguments**:
+	- options: Object: An object with several options like `fps`; see the Options section for more info.
 
 
 ## Functions
@@ -34,6 +36,22 @@ animation.animate(state);
 ~~~
 
 This function starts the animation with a given state to start with -- the snippet above has that under variable `state`. The state can be of any given choice. This depends entirely on how the state will be manipulated in the `onTick` function; see onTick under the Options section.
+
+## Terminate
+
+~~~ javascript
+return Animation.Terminate(state);
+~~~
+
+This function wraps the given state object in one that also tells the animation loop to terminate. Use this if the animation should terminate in the `onTick` function; see onTick under the Options section.
+
+## Continue
+
+~~~ javascript
+return Animation.Continue(state);
+~~~
+
+This function wraps the given state object in one that also tells the animation loop to continue. Use this if the animation should continue in the `onTick` function; see onTick under the Options section.
 
 
 ## Options
@@ -109,6 +127,17 @@ This function is called right after the last frame/tick has happened. No alterat
 - **Type**: Function
 - **Arguments**:
 	- state: Object: The final state of the animation.
+
+
+## Browser Support
+
+This has been written for Browsers only at the time being.
+
+- IE9+
+- Latest Firefox
+- Latest Chrome
+
+Functions used are from IE9+, so this should hopefully work on any reasonably modern browsers.
 
 
 ## Example
