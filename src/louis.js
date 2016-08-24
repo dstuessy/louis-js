@@ -1,3 +1,6 @@
+/*jslint
+    fudge
+*/
 (function () {
     'use strict';
 
@@ -8,11 +11,14 @@
         };
     }
 
+
     function range(n) {
         var arr = [];
+
         for (var i = 0; i < n; i++) {
             arr.push(i);
         }
+
         return arr;
     }
 

@@ -1,7 +1,7 @@
 var fs = require('fs'),
 	LintStream = require('jslint').LintStream;
 
-var filename = 'src/animate.js';
+var filename = 'src/louis.js';
 var lintStream = new LintStream({
 	edition: 'latest',
 	length: 100,
