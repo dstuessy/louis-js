@@ -20,17 +20,17 @@
 	<script type="text/javascript">
 		el = document.querySelector('.animateMe');
 		a = Animation({
-			fps: 10,
+			fps: 100,
 			onStart: function(state) {
 				console.log('starting');
 			},
 			onTick: function(state, delta) {
 				var winHeight = window.innerHeight;
 				var el = state.el;
-				var velocity = state.velocity;
 				var acceleration = state.acceleration;
+				var velocity = state.velocity + acceleration;
 				var height = parseInt(el.style.height) || 0;
-				var topLimit = 200;
+				var topLimit = 500;
 				var top = Math.min(state.top + velocity, topLimit);
 				var state = {
 					el: el,
@@ -60,8 +60,8 @@
 		a.animate({
 			el: el,
 			top: parseInt(el.style.top) || 0,
-			acceleration: 10,
-			velocity: 5
+			acceleration: 0.002,
+			velocity: 0
 		});
 	</script>
 </body>
