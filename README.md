@@ -10,8 +10,8 @@ A copy of the source file can be found under `src/louis.js`.
 ### animate
 
 ~~~ javascript
-	var animation = Animation(options);
-	animation.animate(state);
+var animation = Animation(options);
+animation.animate(state);
 ~~~
 
 This function starts the animation with a given state to start with -- the snippet above has that under variable `state`. The state can be of any given choice. This depends entirely on how the state will be manipulated in the `onTick` function; see onTick under the Options section.
@@ -22,9 +22,9 @@ This function starts the animation with a given state to start with -- the snipp
 ### fps
 
 ~~~ javascript
-	Animation({
-		fps: Number
-	});
+Animation({
+	fps: Number
+});
 ~~~
 
 Number of frames per second for the animation. This has no default value.
@@ -34,9 +34,9 @@ Number of frames per second for the animation. This has no default value.
 ### onStart
 
 ~~~ javascript
-	Animation({
-		onStart: function(state) {}
-	});
+Animation({
+	onStart: function(state) {}
+});
 ~~~
 
 Function to execute just before animation starts the first frame/tick. No alterations of state can happen here.
@@ -48,9 +48,9 @@ Function to execute just before animation starts the first frame/tick. No altera
 ### onTick
 
 ~~~ javascript
-	Animation({
-		onTick: function(state) {}
-	});
+Animation({
+	onTick: function(state) {}
+});
 ~~~
 
 This is the function that alters the state of the animation on each frame/tick. Without alteration of state, the animation simply won't occur.
@@ -66,9 +66,9 @@ To stop or continue the animation, return the altered state of the animation usi
 ### draw
 
 ~~~ javascript
-	Animation({
-		draw: function(state) {}
-	});
+Animation({
+	draw: function(state) {}
+});
 ~~~
 
 Draw the current state of the animation to either the DOM or Canvas -- pick your poison!
@@ -80,9 +80,9 @@ Draw the current state of the animation to either the DOM or Canvas -- pick your
 ### onEnd
 
 ~~~ javascript
-	Animation({
-		onEnd: function(state) {}
-	});
+Animation({
+	onEnd: function(state) {}
+});
 ~~~
 
 This function is called right after the last frame/tick has happened. No alterations of state can happen here.
