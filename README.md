@@ -86,7 +86,9 @@ Function to execute just before animation starts the first frame/tick. No altera
 
 ~~~ javascript
 Animation({
-	onTick: function(state) {}
+	onTick: function(state) {
+		return state;
+	}
 });
 ~~~
 
