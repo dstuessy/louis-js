@@ -87,7 +87,11 @@ Function to execute just before animation starts the first frame/tick. No altera
 ~~~ javascript
 Animation({
 	onTick: function(state) {
-		return state;
+		if (true) {
+			return Animation.Terminate(state);
+		} else {
+			return Animation.Continue(state);
+		}
 	}
 });
 ~~~
