@@ -51,10 +51,13 @@
 
             accumulatedTime += delta(currentTime, previousTime);
 
-            while (accumulatedTime >= timePerTick(fps) && !tickResult.terminated) {
+            while (accumulatedTime > timePerTick(fps) && !tickResult.terminated) {
                 tickResult = tickFn(tickResult.state);
                 accumulatedTime -= timePerTick(fps);
             }
+
+            accumulatedTime = 0;
+            previousTime = now();
 
             return tickResult;
         };
@@ -77,6 +80,17 @@
         }
     }
 
+    /**
+     * The Accumulator receives 60 fps 
+     * as a hard-coded value
+     * as this is the desired framerate
+     * for logic updates. This should
+     * always be independent to the 
+     * graphics updates, in order
+     * to ensure no frames are dropped
+     * as a result of coupled logic
+     * and graphics updates.
+     */
     function animate(fps, onStart, onTick, draw, onEnd, startResult) {
         var previousTickTime = now();
 
