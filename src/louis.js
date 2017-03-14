@@ -5,6 +5,14 @@
 (function () {
     'use strict';
 
+    var requestAnimationFrame = window.requestAnimationFrame;
+
+    if (requestAnimationFrame === undefined || requestAnimationFrame === null) {
+        requestAnimationFrame = function(fn) {
+            return setTimeout(fn, 0);
+        };
+    }
+
     function partial(fn, args) {
         return function partiallyApplied() {
             var moreArgs = Array.prototype.slice.call(/*ignoreme*/arguments, /*ignoreme*/0);
